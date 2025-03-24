@@ -34,7 +34,8 @@ def show_menu():
     print("\nMenu de opções:")
     print("1 - Fazer backup completo (todos os arquivos).")
     print("2 - Escolha essa opção para compactar os arquivos antes de enviar.")
-    print("3 - Sair")
+    print("3 - Agendar backup.")
+    print("4 - Sair")
     
 
 def compress_files(origin_folder, zipname = f"backup-{formatted_date}.zip"):
