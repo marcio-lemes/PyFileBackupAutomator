@@ -27,5 +27,5 @@ if folders:
             case 3:
                 print("Saindo!")
                 break
-            case 4:
+            case _:
                 print("Opção inválida.")
