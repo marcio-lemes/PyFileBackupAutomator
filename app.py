@@ -1,4 +1,4 @@
-from main import show_menu, get_folders, compress_files, backup_files
+from main import show_menu, get_folders, compress_files, backup_files, schedule_backup
 
 compress = False
 
@@ -25,6 +25,8 @@ if folders:
                 compress = True
                 print("Os arquivos serão compactados.")
             case 3:
+                schedule_backup(origin_folder, destination_folder, compress)
+            case 4:
                 print("Saindo!")
                 break
             case _:
