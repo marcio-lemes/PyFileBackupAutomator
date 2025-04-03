@@ -4,6 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 scheduler = BackgroundScheduler() #Instância o agendador
 scheduler.start() #Inicializa o agendador
 
+
 compress = False
 
 folders = get_folders()
@@ -45,6 +46,7 @@ if folders:
                 else:
                     print("Opção inválida.")
                     continue
+
             case 4:
                 print("Saindo!")
                 scheduler.shutdown()
