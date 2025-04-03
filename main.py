@@ -2,7 +2,6 @@ from pathlib import Path
 from zipfile import ZipFile
 from datetime import date, datetime
 import shutil
-from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 today = date.today() #Obtem a data atual
@@ -89,18 +88,17 @@ def backup_files(origin_folder, destination_folder, compress):
             log_file.write(f"{i} - {file.name}\n")
         print(f"\nLog de backup gerado em: {log_path}")
         
-def schedule_backup(origin_folder, destination_folder, compress):
-    print("\nQual o período que o backup deve ser efetuado?")
-    print("1 - Diariamente")
-    print("2 - Semanalmente")
-    print("3 - Mensalmente")
-
-    try:
-        interval_option = int(input("> "))
-    except ValueError:
-        print("\nEntrada deve ser um número.")
-        return
+def schedule_backup(origin_folder, destination_folder, compress, interval_option, scheduler):
+    """
+    Agenda o backup em segundo plano e executa ele no intervalo que foi definido.
     
+    Args:
+    origin_folder: Objeto Path contendo o caminho completo da pasta de origem.
+    destination_folder: Objeto Path contendo o caminho completo da pasta de destino.
+    compress: Variável que define se os arquivos vão ser compactados ou não (True/False).
+    interval_option: Variável que define o intervalo de tempo que o usuário escolheu para que o backup seja executado
+    scheduler: Agendador inicializado no arquivo app.py
+    """
     if interval_option == 1:
         interval = 24 * 60 * 60  # Diariamente
     elif interval_option == 2:
@@ -110,21 +108,11 @@ def schedule_backup(origin_folder, destination_folder, compress):
     else:
         print("\nOpção inválida.")
         return
-    
-    scheduler = BackgroundScheduler()
     scheduler.add_job(
         backup_files, 
         trigger= IntervalTrigger(seconds=interval), 
         args=[origin_folder, destination_folder, compress]
         )
     
-    scheduler.start()
     print(f"\nBackup agendado para ser executado a cada {interval / 3600} horas")
     print(f"\nPressione Ctrl+C para encerrar o programa.")
-    
-    try:
-        while True:
-            pass
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
-        print("\nAgendador encerrado.")
